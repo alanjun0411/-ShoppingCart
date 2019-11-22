@@ -24,4 +24,22 @@ $(function () {
         }
         if (num == 1) $('.reduce').addClass('disabled');
     })
+
+    
+    let list = JSON.parse(localStorage.getItem('cars')) || [];
+
+    $('.count').text(list.length);
+    
+    $('.addshopcar').on('click',()=>{
+        let obj = {
+            id : data.pID,
+            sum:num,
+            name :data.name,
+            price:data.price,
+            src:data.imgSrc
+        }
+        list.push(obj);
+        localStorage.setItem('cars',JSON.stringify(list));
+        $('.count').text(list.length);
+    })
 })
