@@ -99,6 +99,7 @@
   width: 50%;
   height: 8px;
   background-color: #c81623;
+  border-radius: 5px;
 }
 .buy {
   display: block;
