@@ -8,38 +8,57 @@ $(function () {
     $('.sku-name').text(data.name);
     $('.summary-price em').text(`¥${data.price}`);
 
-    let num = 1;
+
     $('.add').on('click', () => {
-        num++;
-        $('.choose-number').val(num);
-        if (num == 2) {
-            $('.reduce').removeClass('disabled');
-        }
-        console.log($('.choose-number').val());
+        counter('.choose-number', function (e) {
+            $('.choose-number').val(e);
+            if (e == 2) $('.reduce').removeClass('disabled');
+        }, true)
     })
     $('.reduce').on('click', () => {
+        let num = $('.choose-number').val();
         if (num > 1) {
-            num--;
-            $('.choose-number').val(num);
+            num = counter('.choose-number', function (e) {
+                $('.choose-number').val(e);
+            }, false)
         }
         if (num == 1) $('.reduce').addClass('disabled');
     })
 
-    
-    let list = JSON.parse(localStorage.getItem('cars')) || [];
 
+
+    let list = jsonData('cars') || [];
     $('.count').text(list.length);
-    
-    $('.addshopcar').on('click',()=>{
-        let obj = {
-            id : data.pID,
-            sum:num,
-            name :data.name,
-            price:data.price,
-            src:data.imgSrc
+    $('.addshopcar').on('click', () => {
+        let number = $('.choose-number').val();
+        console.log(number);
+        
+        if (isNaN(number) || number.trim() == '' || number <= 0) {
+            alert('数量输入不正确！！！');
+        } else {
+            let newP = list.find(e => {
+                return e.id == id;
+            })
+            number = parseInt(number);
+            if (newP) {
+                newP.sum += number;
+
+            } else {
+                let obj = {
+                    id: data.pID,
+                    sum: number,
+                    name: data.name,
+                    price: data.price,
+                    src: data.imgSrc,
+                    isChecked: true
+                }
+                list.push(obj);
+            }
+            jsonData('cars', list);
+            location.href = './cart.html';
         }
-        list.push(obj);
-        localStorage.setItem('cars',JSON.stringify(list));
+
         $('.count').text(list.length);
+       
     })
 })

@@ -1,5 +1,8 @@
 $(function () {
-    let list = JSON.parse(localStorage.getItem('cars')) || [];
+    // let list = JSON.parse(localStorage.getItem('cars')) || [];
+    let list = jsonData('cars') || [];
+    console.log(list);
+    
 
     if (list.length > 0) {
         $('.empty-tip').css('display', 'none');
@@ -40,11 +43,21 @@ $(function () {
               </div>
             </div>
           </div>`;
-          console.log(html);
+          // console.log(html);
         })
         
         
         $('.item-list').html(html);
+        
+
+       
+        $('.pick-all').on('click',()=>{
+          console.log($('.pick-all'));
+          
+          
+          $('.item-ck').prop('checked',$('.pick-all').prop('checked'));
+          $('.pick-all').prop('checked',$('.pick-all').prop('checked'));
+        })
         
     }
 
