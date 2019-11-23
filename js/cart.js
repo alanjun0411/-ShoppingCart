@@ -45,10 +45,11 @@ $(function () {
           </div>`;
           // console.log(html);
         })
-        
-        
         $('.item-list').html(html);
         
+        $('.add').on('click',()=>{
+          counter('.number',true);
+        })
 
        
         $('.pick-all').on('click',()=>{

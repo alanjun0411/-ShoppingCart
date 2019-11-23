@@ -10,17 +10,13 @@ $(function () {
 
 
     $('.add').on('click', () => {
-        counter('.choose-number', function (e) {
-            $('.choose-number').val(e);
-            if (e == 2) $('.reduce').removeClass('disabled');
-        }, true)
+        let num =counter('.choose-number', true)
+        if (num == 2) $('.reduce').removeClass('disabled');
     })
     $('.reduce').on('click', () => {
         let num = $('.choose-number').val();
         if (num > 1) {
-            num = counter('.choose-number', function (e) {
-                $('.choose-number').val(e);
-            }, false)
+            num = counter('.choose-number', false)
         }
         if (num == 1) $('.reduce').addClass('disabled');
     })
