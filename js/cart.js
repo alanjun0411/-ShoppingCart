@@ -1,16 +1,16 @@
 $(function () {
-    // let list = JSON.parse(localStorage.getItem('cars')) || [];
-    let list = jsonData('cars') || [];
-    console.log(list);
-    
+  // let list = JSON.parse(localStorage.getItem('cars')) || [];
+  let list = jsonData('cars') || [];
 
-    if (list.length > 0) {
-        $('.empty-tip').css('display', 'none');
-        $('.cart-header').removeClass('hidden');
-        $('.total-of').removeClass('hidden');
-        let html="";
-        list.forEach(e => {
-            html +=`<div class="item" data-id="${e.id}">
+
+  if (list.length > 0) {
+    $('.empty-tip').css('display', 'none');
+    $('.cart-header').removeClass('hidden');
+    $('.total-of').removeClass('hidden');
+    //创建列表
+    let html = "";
+    list.forEach(e => {
+      html += `<div class="item" data-id="${e.id}">
             <div class="row">
               <div class="cell col-1 row">
                 <div class="cell col-1">
@@ -36,30 +36,72 @@ $(function () {
               </div>
               <div class="cell col-1 tc lh70">
                 <span>￥</span>
-                <em class="computed">${e.price*e.sum}</em>
+                <em class="computed">${e.price * e.sum}</em>
               </div>
               <div class="cell col-1">
                 <a href="javascript:void(0);" class="item-del">从购物车中移除</a>
               </div>
             </div>
           </div>`;
-          // console.log(html);
-        })
-        $('.item-list').html(html);
-        
-        $('.add').on('click',()=>{
-          counter('.number',true);
-        })
+      // console.log(html);
+    })
+    $('.item-list').html(html);
+    //加号
+    $('.item-list').on('click', '.add', function () {
+      let sum = counter($(this).siblings('.number'), true);
+      let id = $(this).parents('.item').attr('data-id');
+      let taggle = list.find(e => {
+        return e.id == id
+      })
+      taggle.sum = sum;
+      $(this).parents('.item').find('.computed').text(taggle.sum * taggle.price);
+      jsonData('cars', list);
 
-       
-        $('.pick-all').on('click',()=>{
-          console.log($('.pick-all'));
-          
-          
-          $('.item-ck').prop('checked',$('.pick-all').prop('checked'));
-          $('.pick-all').prop('checked',$('.pick-all').prop('checked'));
-        })
-        
-    }
+    })
+    //减号
+    $('.item-list').on('click', '.reduce', function () {
+      if ($(this).next().val() <= 1) return;
+      sum = counter($(this).next(), false);
+      let id = $(this).parents('.item').attr('data-id');
+      let taggle = list.find(e => {
+        return e.id == id
+      })
+      taggle.sum = sum;
+      $(this).parents('.item').find('.computed').text(taggle.sum * taggle.price);
+      jsonData('cars', list);
+    })
+    //获得焦点
+    let sumOld;
+    $('.item-list').on('focus', '.number', function () {
+      sumOld = $(this).val();
+    })
+    //失去焦点
+    $('.item-list').on('blur', '.number', function () {
+      let sum = parseFloat($(this).val());
+      if (sum < 1 || isNaN(sum) || sum == '') {
+        alert('请输入有效值！！！');
+        $(this).val(sumOld);
+        return;
+      }
+      let id = $(this).parents('.item').attr('data-id');
+      let taggle = list.find(e => {
+        return e.id == id
+      })
+      taggle.sum = sum;
+      $(this).parents('.item').find('.computed').text(taggle.sum * taggle.price);
+      jsonData('cars', list);
+    })
+
+
+
+    $('.pick-all').on('click', () => {
+      console.log($('.pick-all'));
+
+
+      $('.item-ck').prop('checked', $('.pick-all').prop('checked'));
+      $('.pick-all').prop('checked', $('.pick-all').prop('checked'));
+    })
+
+  }
 
 })

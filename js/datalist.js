@@ -27,9 +27,8 @@ $(function () {
     $('.count').text(list.length);
     $('.addshopcar').on('click', () => {
         let number = $('.choose-number').val();
-        console.log(number);
         
-        if (isNaN(number) || number.trim() == '' || number <= 0) {
+        if (isNaN(number) || number.trim().length == 0 || number <= 0) {
             alert('数量输入不正确！！！');
         } else {
             let newP = list.find(e => {

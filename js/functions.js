@@ -21,14 +21,7 @@ function counter(element, styles, callback) {
     let num = $(element).val();
     styles ? num++ : num--;
     $(element).val(num);
-    console.log(callback);
-    console.log(Boolean(callback));
-    
-    if(callback) {
-        console.log(num);
-        callback(num);
-        console.log(num);
-    };
-    console.log(num);
+    if(callback) callback(num);
     return num;
 }
+
